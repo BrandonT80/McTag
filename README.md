@@ -1,2 +1,2 @@
 # McTag
-Small Minecraft Tag Minigame
+ Small Minecraft Tag Minigame
