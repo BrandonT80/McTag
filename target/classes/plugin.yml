@@ -1,6 +1,6 @@
 name: MCTag
 main: bct.loadupstudios.MCTag.MCTag
-version: 2.1
+version: 3.2
 api-version: 1.13
 author: BrandonT80
 website: https://www.loadupstudios.com
@@ -18,7 +18,6 @@ permissions:
     children:
       mctag.it: true
       mctag.start: true
-      mctag.opt: true
       mctag.name: true
       mctag.reload: true
       mctag.restart: true
@@ -31,9 +30,6 @@ permissions:
   mctag.restart:
     description: Tags a random player, restarting the game (same as start)
     default: false
-  mctag.opt:
-    description: Set to false to opt out
-    default: true
   mctag.name:
     description: Set the tag to a specific player
     default: false

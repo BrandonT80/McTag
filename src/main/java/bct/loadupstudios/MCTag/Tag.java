@@ -7,6 +7,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.command.CommandSender;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Tag
 {
@@ -15,9 +17,12 @@ public class Tag
 	private Random rand = new Random();
 	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 	
-	Tag(FileConfiguration c)
+	Logger logger;
+	
+	Tag(FileConfiguration c, Logger l)
 	{
 		config = c;
+		logger = l;
 		if(!getConfig().getString("taggedPlayer").equals("noPlayer"))
 		{
 			taggedPlayer = getConfig().getString("taggedPlayer");
@@ -79,7 +84,8 @@ public class Tag
 		}
 		else if(taggedPlayer.equals(newtagplayer))
 		{
-			System.out.println("Random tagged player is already tagged");
+			//System.out.println("Random tagged player is already tagged");
+			logger.log(Level.INFO, "Random tagged player is already tagged");
 			Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&',"&c" + newtagplayer + " &bhas been tagged by the GODS, again!"));
 		}
 	}
@@ -116,8 +122,7 @@ public class Tag
 		{
 			if(tagPlayer != null)
 			{
-					tagPlayer.sendMessage("You have been tagged!");
-			
+				tagPlayer.sendMessage("You have been tagged!");
 			}
 		}
 	}
@@ -146,11 +151,13 @@ public class Tag
 			{ 
 				if(i != 20)
 				{
-					System.out.println("Player " + playerName + " is opted out of tag, finding another player...");
+					//System.out.println("Player " + playerName + " is opted out of tag, finding another player...");
+					logger.log(Level.WARNING, "Player " + playerName + " is opted out of tag, finding another player...");
 				} 
 				else 
 				{
-					System.out.println("Failed to find a suitable player in 20 iterations, this is likely due to many, or all players opting out. You may try again or specify a player using /tag <playername>");
+					//System.out.println("Failed to find a suitable player in 20 iterations, this is likely due to many, or all players opting out. You may try again or specify a player using /tag <playername>");
+					logger.log(Level.WARNING, "Failed to find a suitable player in 20 iterations, this is likely due to many, or all players opting out. You may try again or specify a player using /mctag <playername>");
 					if(sender != null)
 					{
 						sender.sendMessage("Failed to find a suitable player, please try again. Read console for more information.");

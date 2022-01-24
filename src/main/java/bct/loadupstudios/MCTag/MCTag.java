@@ -1,28 +1,22 @@
 package bct.loadupstudios.MCTag;
 
-//import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-//import org.bukkit.entity.Player;
-//import org.bukkit.event.EventHandler;
-//import org.bukkit.event.Listener;
-//import org.bukkit.event.entity.EntityDamageByEntityEvent;
-//import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-
-//import bct.loadupstudios.MCTag.MyListener;
-//import bct.loadupstudios.MCTag.Tag;
 
 public final class MCTag extends JavaPlugin
 {
+	Logger logger = this.getLogger();
 	FileConfiguration config = this.getConfig();
-	Tag tagClass = new Tag(config);
+	Tag tagClass = new Tag(config, logger);
 	private boolean broadcastOpt = config.getBoolean("broadcastOpt");
-	MyListener eventManager = new MyListener(tagClass, config);
+	MyListener eventManager = new MyListener(tagClass, config, logger);
 	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 	
     @Override
@@ -42,11 +36,13 @@ public final class MCTag extends JavaPlugin
 		
 		if(config.getString("taggedPlayer").equals("noPlayer"))
 		{
-			System.out.println("Tag loaded! No current player is tagged.");
+			//System.out.println("Tag loaded! No current player is tagged.");
+			logger.log(Level.INFO, "Tag loaded! No current player is tagged.");
 		}
 		else
 		{
-			System.out.println("Tag loaded! Current Tagged Player: " + config.getString("taggedPlayer"));
+			//System.out.println("Tag loaded! Current Tagged Player: " + config.getString("taggedPlayer"));
+			logger.log(Level.INFO, "Tag loaded! Current Tagged Player: " + config.getString("taggedPlayer"));
 		}
     }
     
@@ -56,6 +52,7 @@ public final class MCTag extends JavaPlugin
         // TODO Insert logic to be performed when the plugin is disabled
     	config.set("taggedPlayer", tagClass.getCurrentTag());
 		saveConfig();
+		eventManager.onExit();
     }
     
     @Override
@@ -104,8 +101,9 @@ public final class MCTag extends JavaPlugin
 					return true;
 				case "optout":
 					//Make sure user has the permission to use the command
-					String commandOOLP = "lp user " + sender.getName() + " permission set mctag.opt false";
-					Bukkit.dispatchCommand(console, commandOOLP);
+					//String commandOOLP = "lp user " + sender.getName() + " permission set mctag.opt false";
+					//Bukkit.dispatchCommand(console, commandOOLP);
+					eventManager.playerOpt(sender.getName(), 2);
 					sender.sendMessage("You have opted out of tag.");
 					if(broadcastOpt)
 					{
@@ -114,8 +112,9 @@ public final class MCTag extends JavaPlugin
 					return true;
 				case "optin":
 					//Make sure user has the permission to use the command
-					String commandOILP = "lp user " + sender.getName() + " permission set mctag.opt true";
-					Bukkit.dispatchCommand(console, commandOILP);
+					//String commandOILP = "lp user " + sender.getName() + " permission set mctag.opt true";
+					//Bukkit.dispatchCommand(console, commandOILP);
+					eventManager.playerOpt(sender.getName(), 1);
 					sender.sendMessage("You have opted into tag.");
 					if(broadcastOpt)
 					{
@@ -126,7 +125,8 @@ public final class MCTag extends JavaPlugin
 					if(sender.hasPermission("mctag.reload"))
 					{
 						sender.sendMessage("Reloading tag...");
-						System.out.println("Reloading tag...");
+						//System.out.println("Reloading tag...");
+						logger.log(Level.INFO, "Reloading tag...");
 						reload();
 					}
 					else
@@ -134,13 +134,16 @@ public final class MCTag extends JavaPlugin
 						sender.sendMessage("You do not have the required permission to use that command (tag.reload).");
 					}
 				default:
-					System.out.println("Default found: " + args[0]);
+					//System.out.println("Default found: " + args[0]);
+					logger.log(Level.INFO, "Default found: " + args[0]);
 					if(Bukkit.getPlayer(args[0]) != null)
 					{
-						System.out.println(Bukkit.getPlayer(args[0]).getDisplayName());
+						//System.out.println(Bukkit.getPlayer(args[0]).getDisplayName());
+						logger.log(Level.INFO, Bukkit.getPlayer(args[0]).getDisplayName());
 						if(sender.hasPermission("mctag.name"))
 						{
-							if(Bukkit.getPlayer(args[0]).hasPermission("mctag.opt"))
+							//if(Bukkit.getPlayer(args[0]).hasPermission("mctag.opt"))
+							if(eventManager.readPlayer(Bukkit.getPlayer(args[0]).getDisplayName()) == 1)
 							{
 								tagClass.tagPlayer(args[0]);
 								sender.sendMessage("You have set the tagged player to " + args[0] + ".");
@@ -158,7 +161,7 @@ public final class MCTag extends JavaPlugin
 					
 					else
 					{
-						commandOILP = "help tag";
+						String commandOILP = "help tag";
 						Bukkit.dispatchCommand(console, commandOILP);
 					}
 					return true;
