@@ -133,6 +133,14 @@ public final class MCTag extends JavaPlugin
 					{
 						sender.sendMessage("You do not have the required permission to use that command (tag.reload).");
 					}
+					return true;
+				case "score":
+					//If a player turns on or off the score
+						//if player has score on
+							//then turn the scoreboard off
+						//if player has score off
+							//then turn the scoreboard on
+					return true;
 				default:
 					//System.out.println("Default found: " + args[0]);
 					logger.log(Level.INFO, "Default found: " + args[0]);
@@ -158,7 +166,6 @@ public final class MCTag extends JavaPlugin
 							sender.sendMessage("You do not have the required permission to use that command (tag.name).");
 						}
 					}
-					
 					else
 					{
 						String commandOILP = "help tag";

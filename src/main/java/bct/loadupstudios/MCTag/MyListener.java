@@ -37,7 +37,8 @@ public class MyListener implements Listener
  	static final String DB_URL = "jdbc:h2:./plugins/MCTag/MCTag";  
  	//  Database credentials 
  	static final String USER = "sa"; 
- 	static final String PASS = ""; 
+ 	static final String PASS = "";
+	Scoreboard scoreboards;
 	
 	MyListener(Tag tagClassObject, FileConfiguration conf, Logger l)
 	{
@@ -57,6 +58,8 @@ public class MyListener implements Listener
 		{
 			logger.log(Level.WARNING, "Exception found: " + e);
 		}
+
+		scoreboards = new Scoreboard(logger);
 	}
 	
 	MyListener()
