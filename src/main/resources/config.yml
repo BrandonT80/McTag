@@ -1,3 +1,9 @@
+#Do not change the below config version
+version: 2.1
 taggedPlayer: "noPlayer"
+#Set below to true if you want to broadcast when a player opts in or out of tag
 broadcastOpt: true
+#Tag cooldown in seconds to re-tag the same player
 cooldown: 5
+#Set below to true if you want to use scoreboards, false if not
+scoreboards: true
