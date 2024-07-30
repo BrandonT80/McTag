@@ -4,7 +4,7 @@
   <groupId>bct.loadupstudios.mctag</groupId>
   <artifactId>MCTag</artifactId>
   <name>MCTag</name>
-  <version>4.0</version>
+  <version>4.1</version>
   <description>Tag Minigame</description>
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>

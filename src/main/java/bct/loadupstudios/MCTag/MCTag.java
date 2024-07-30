@@ -170,8 +170,8 @@ public final class MCTag extends JavaPlugin
 				if(lineToCheck.substring(9,12).equals("cha")) { //This happens if the comments still exist in the code, just check next line
 					lineToCheck = reader.nextLine();
 				}
-				if(!(lineToCheck.substring(9,12)).equals("2.1")) {	//This checks the version, change this if the config has been ammended
-					logger.log(Level.INFO, "New Config File Found, Updating...");	//Log that the file is being updated
+				if(!(lineToCheck.substring(9,12)).equals("2.2")) {	//This checks the version, change this if the config has been ammended
+					logger.log(Level.INFO, "New Config Version Found, Updating...");	//Log that the file is being updated
 					reader.close();		//Close the reader (No longer needed to read as we are going to overwrite this file)
 					rewriteConfig();	//Call the re-write function
 				}
@@ -199,21 +199,43 @@ public final class MCTag extends JavaPlugin
 	public void rewriteConfig() {
 		//Beginning of rewriteConfig - Rewrites the config to a new setup. Creates temp file to hold old data
 		try {
+			//Store old config values, if they exist
+			String taggedPlayer = "noPlayer";
+			boolean broadcastOpt = false;
+			int cooldown = 5;
+			boolean scoreboards = false;
+			boolean autoTagOnLeave = false;
+			if(config.contains("taggedPlayer")) {
+				taggedPlayer = config.getString("taggedPlayer");
+			}
+			if(config.contains("broadcastOpt")) {
+				broadcastOpt = config.getBoolean("broadcastOpt");
+			}
+			if(config.contains("cooldown")) {
+				cooldown = config.getInt("cooldown");
+			}
+			if(config.contains("scoreboards")) {
+				scoreboards = config.getBoolean("scoreboards");
+			}
+			if(config.contains("autoTagOnLeave")) {
+				autoTagOnLeave = config.getBoolean("autoTagOnLeave");
+			}
 			File tempFile2 = new File(folder,"tempFile2.yml");	//Setup a temporary file to distract the config the server is using
 			tempFile2.createNewFile();		//Create the temporary file
 			config.load(tempFile2);			//Load the config the server is using as the temporary file (allows modifications of the actual config file)
 			FileWriter writer = new FileWriter(configFile);	//Open the config file in for writing
 			//Below is the writing of the file for the newest version
-			//Currently 2.1 rewrote for adding cooldown, broadcast opts
 			writer.write("#Do not change the below config version\r\n"
-					+ "version: 2.1\r\n"
-					+ "taggedPlayer: noPlayer\r\n"
+					+ "version: 2.2\r\n"
+					+ "taggedPlayer: " + ((!taggedPlayer.equals("noPlayer")) ? taggedPlayer : "noPlayer") + "\r\n"
 					+ "#Set below to true if you want to broadcast when a player opts in or out of tag\r\n"
-					+ "broadcastOpt: true\r\n"
+					+ "broadcastOpt: " + ((!broadcastOpt) ? false : true) + "\r\n"
 					+ "#Tag cooldown in seconds to re-tag the same player\r\n"
-					+ "cooldown: 5\r\n"
+					+ "cooldown: " + ((cooldown != 5) ? cooldown : 5) + "\r\n"
 					+ "#Set below to true if you want to use scoreboards, false if not\r\n"
-					+ "scoreboards: true");
+					+ "scoreboards: " + ((!scoreboards) ? false : true) + "\r\n"
+					+ "#Set below to false if you do not want the auto re-tag on leave to trigger (When tagged player quits)\r\n"
+					+ "autoTagOnLeave: " + ((!autoTagOnLeave) ? false : true));
 			writer.close();			//Close the configFile (writing done)
 			config.load(configFile);	//Load the configFile back in to the server
 			tempFile2.delete();			//Delete the temporary file

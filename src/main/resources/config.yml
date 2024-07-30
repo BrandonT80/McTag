@@ -1,5 +1,6 @@
 #Do not change the below config version
-version: 2.1
+version: 2.2
+#Holds the last tagged player
 taggedPlayer: "noPlayer"
 #Set below to true if you want to broadcast when a player opts in or out of tag
 broadcastOpt: true
@@ -7,3 +8,5 @@ broadcastOpt: true
 cooldown: 5
 #Set below to true if you want to use scoreboards, false if not
 scoreboards: true
+#Set below to false if you do not want the auto re-tag on leave to trigger (When tagged player quits)
+autoTagOnLeave: true

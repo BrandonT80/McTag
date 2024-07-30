@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>bct.loadupstudios.mctag</groupId>
   <artifactId>MCTag</artifactId>
-  <version>4.0</version>
+  <version>4.1</version>
   <name>MCTag</name>
   <description>Tag Minigame</description>
   <build>

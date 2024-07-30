@@ -119,10 +119,12 @@ public class MyListener implements Listener
 
 	@EventHandler
 	public void onPlayerLeave(PlayerQuitEvent event) {
-		if(readPlayer(event.getPlayer().getName()) == 1) {
-			scoreboards.removePlayerScoreboard(event.getPlayer().getName());
+		if(config.getBoolean("autoTagOnLeave")) {
+			if (readPlayer(event.getPlayer().getName()) == 1) {
+				scoreboards.removePlayerScoreboard(event.getPlayer().getName());
+			}
+			tagClass.restartTagIfRemovedPlayerIsTagged(event.getPlayer().getName());
 		}
-		tagClass.restartTagIfRemovedPlayerIsTagged(event.getPlayer().getName());
 	}
 	
 	public int readPlayer(String username) {
