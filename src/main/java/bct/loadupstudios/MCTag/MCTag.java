@@ -210,7 +210,7 @@ public final class MCTag extends JavaPlugin
 			}
 			if(config.contains("broadcastOpt")) {
 				broadcastOpt = config.getBoolean("broadcastOpt");
-			}//temp
+			}
 			if(config.contains("cooldown")) {
 				cooldown = config.getInt("cooldown");
 			}
